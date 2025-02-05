@@ -20,8 +20,17 @@ namespace ASPNETCoreIdentityDemo
                 options.UseSqlServer(connectionString));
 
             //Configuration Identity Services
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(
+                options =>
+                {
+                    options.Password.RequireDigit = true;
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequiredUniqueChars = 4;
+                })
+                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             var app = builder.Build();
 
