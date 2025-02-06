@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETCoreIdentityDemo.Models
 {
@@ -6,6 +7,7 @@ namespace ASPNETCoreIdentityDemo.Models
     {
         [Required]
         [EmailAddress]
+        [Remote(action: "IsEmailAvailable", controller: "Account")]
         public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
