@@ -32,6 +32,13 @@ namespace ASPNETCoreIdentityDemo
                 })
                  .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            // Configure the Application Cookie settings
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                // If the LoginPath isn't set, ASP.NET Core defaults the path to /Account/Login.
+                options.LoginPath = "/Account/Login"; // Set your login path here
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

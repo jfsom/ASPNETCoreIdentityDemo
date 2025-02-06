@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using ASPNETCoreIdentityDemo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETCoreIdentityDemo.Controllers
@@ -13,12 +14,26 @@ namespace ASPNETCoreIdentityDemo.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize]
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult NonSecureMethod()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult SecureMethod()
         {
             return View();
         }
