@@ -20,7 +20,7 @@ namespace ASPNETCoreIdentityDemo
                 options.UseSqlServer(connectionString));
 
             //Configuration Identity Services
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
                 options =>
                 {
                     options.Password.RequireDigit = true;

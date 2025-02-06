@@ -7,8 +7,8 @@ namespace ASPNETCoreIdentityDemo.Controllers
 {
     public class AdministrationController : Controller
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public AdministrationController(RoleManager<IdentityRole> roleManager)
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        public AdministrationController(RoleManager<ApplicationRole> roleManager)
         {
             _roleManager = roleManager;
         }
@@ -33,7 +33,7 @@ namespace ASPNETCoreIdentityDemo.Controllers
                 {
                     // Create the role
                     // We just need to specify a unique role name to create a new role
-                    IdentityRole identityRole = new IdentityRole
+                    ApplicationRole identityRole = new ApplicationRole
                     {
                         Name = roleModel?.RoleName
                     };
@@ -59,7 +59,7 @@ namespace ASPNETCoreIdentityDemo.Controllers
         [HttpGet]
         public async Task<IActionResult> ListRoles()
         {
-            List<IdentityRole> roles = await _roleManager.Roles.ToListAsync();
+            List<ApplicationRole> roles = await _roleManager.Roles.ToListAsync();
             return View(roles);
         }
 
@@ -67,7 +67,7 @@ namespace ASPNETCoreIdentityDemo.Controllers
         public async Task<IActionResult> EditRole(string roleId)
         {
             //First Get the role information from the database
-            IdentityRole role = await _roleManager.FindByIdAsync(roleId);
+            ApplicationRole role = await _roleManager.FindByIdAsync(roleId);
             if (role == null)
             {
                 // Handle the scenario when the role is not found
