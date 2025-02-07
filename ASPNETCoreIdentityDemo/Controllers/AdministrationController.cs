@@ -1,10 +1,12 @@
 ﻿using ASPNETCoreIdentityDemo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASPNETCoreIdentityDemo.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
@@ -221,8 +223,6 @@ namespace ASPNETCoreIdentityDemo.Controllers
 
             return View(model);
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> DeleteRole(string roleId)
