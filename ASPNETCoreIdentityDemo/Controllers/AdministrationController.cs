@@ -234,21 +234,41 @@ namespace ASPNETCoreIdentityDemo.Controllers
                 ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
                 return View("NotFound");
             }
-
-            var result = await _roleManager.DeleteAsync(role);
-            if (result.Succeeded)
+            else
             {
-                // Role deletion successful
-                return RedirectToAction("ListRoles"); // Redirect to the roles list page
-            }
+                // Wrap the code in a try/catch block
+                try
+                {
+                    var result = await _roleManager.DeleteAsync(role);
+                    if (result.Succeeded)
+                    {
+                        // Role deletion successful
+                        return RedirectToAction("ListRoles"); // Redirect to the roles list page
+                    }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
 
-            // If we reach here, something went wrong, return to the view
-            return View("ListRoles", await _roleManager.Roles.ToListAsync());
+                    // If we reach here, something went wrong, return to the view
+                    return View("ListRoles", await _roleManager.Roles.ToListAsync());
+                }
+                // If the exception is DbUpdateException, we know we are not able to
+                // delete the role as there are users in the role being deleted
+                catch (DbUpdateException ex)
+                {
+                    // Log the exception to a file. 
+                    ViewBag.Error = ex.Message;
+
+                    // Pass the ErrorTitle and ErrorMessage that you want to show to the user using ViewBag.
+                    // The Error view retrieves this data from the ViewBag and displays to the user.
+                    ViewBag.ErrorTitle = $"{role.Name} Role is in Use";
+                    ViewBag.ErrorMessage = $"{role.Name} Role cannot be deleted as there are users in this role. If you want to delete this role, please remove the users from the role and then try to delete";
+                    return View("Error");
+                    throw;
+                }
+            }
         }
 
         [HttpGet]
