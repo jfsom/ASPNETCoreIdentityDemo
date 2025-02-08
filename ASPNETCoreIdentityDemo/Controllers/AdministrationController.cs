@@ -250,5 +250,12 @@ namespace ASPNETCoreIdentityDemo.Controllers
             // If we reach here, something went wrong, return to the view
             return View("ListRoles", await _roleManager.Roles.ToListAsync());
         }
+
+        [HttpGet]
+        public IActionResult ListUsers()
+        {
+            var users = _userManager.Users;
+            return View(users);
+        }
     }
 }

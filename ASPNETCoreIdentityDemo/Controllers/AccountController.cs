@@ -29,11 +29,12 @@ namespace ASPNETCoreIdentityDemo.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Copy data from RegisterViewModel to IdentityUser
+                // Copy data from RegisterViewModel to ApplicationUser
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -49,6 +50,14 @@ namespace ASPNETCoreIdentityDemo.Controllers
                 // SignInManager and redirect to index action of HomeController
                 if (result.Succeeded)
                 {
+                    // If the user is signed in and in the Admin role, then it is
+                    // the Admin user that is creating a new user. 
+                    // So redirect the Admin user to ListUsers action of Administration Controller
+                    if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("ListUsers", "Administration");
+                    }
+
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("index", "home");
                 }
