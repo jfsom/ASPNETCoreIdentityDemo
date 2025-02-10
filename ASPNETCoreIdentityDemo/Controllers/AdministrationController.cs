@@ -69,6 +69,7 @@ namespace ASPNETCoreIdentityDemo.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string roleId)
         {
             //First Get the role information from the database
