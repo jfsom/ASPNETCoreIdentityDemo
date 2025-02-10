@@ -46,6 +46,13 @@ namespace ASPNETCoreIdentityDemo
                 options.AccessDeniedPath = "/Account/AccessDenied"; // Set your access denied path here
             });
 
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy",
+                            policy => policy.RequireClaim("Delete Role")
+                        .RequireClaim("Create Role"));
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
