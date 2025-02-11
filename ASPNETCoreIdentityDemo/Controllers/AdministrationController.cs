@@ -290,6 +290,7 @@ namespace ASPNETCoreIdentityDemo.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditUser(string UserId)
         {
             //First Fetch the User Details by UserId
@@ -368,6 +369,7 @@ namespace ASPNETCoreIdentityDemo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "DeleteRolePolicy")]
         public async Task<IActionResult> DeleteUser(string UserId)
         {
             //First Fetch the User you want to Delete
